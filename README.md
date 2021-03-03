@@ -1,7 +1,7 @@
 # jfive
 
 Implementación en VHDL simple, plano (no hay componentes específicos de ninguna FPGA en el procesador), sencilla (no tiene FSM sólo un contador en anillo), de arquitectura Von Neumann y de propósito educacional del ISA RISC-V 32I sin interrupciones, instrucciones privilegiadas, ni los contadores que la arquitectura necesita. Es compatible con RISC-V 32E. 
-Fue probado en FPGA, usando la EDU-FPGA [https://github.com/ciaa/Hardware/tree/master/PCB/EDU-FPGA]
+Fue probado en FPGA, usando la EDU-FPGA https://github.com/ciaa/Hardware/tree/master/PCB/EDU-FPGA
 El principal objetivo de este software es explicar al funcionamiento de un microcontrolador a través de un ISA real, el hardware necesario para implementarlo y que se necesita agregar al procesador para hacer un embebido mínimo.
 El procesador que pude escribir necesita 5 ciclos de reloj para ejecutar cualquier instrucción.
 
