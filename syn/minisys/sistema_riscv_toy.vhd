@@ -11,10 +11,10 @@ end sistema_riscv_toy;
 architecture Behavioral of sistema_riscv_toy is
    constant MEM_PUERTO_SALIDA       :  std_logic_vector(31 downto 0) := x"00001000";
    signal data_in, data_out, addr   :  std_logic_vector(31 downto 0);
-   signal wr                        :  std_logic_vector(2 downto 0);
+   signal wr                        :  std_logic_vector( 3 downto 0);
    signal cs_po                     :  std_logic;
 begin
-   cs_po <= wr(0) when addr = MEM_PUERTO_SALIDA else '0';
+   cs_po <= wr(0) when addr(31 downto 1) = MEM_PUERTO_SALIDA(31 downto 1) else '0';
 
    cmp_core:   entity work.risc32vi(Behavioral)
                generic map(   ENTRY_POINT    => x"00000000")

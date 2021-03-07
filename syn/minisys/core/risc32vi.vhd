@@ -10,7 +10,7 @@ entity risc32vi is
            data_in      : in     STD_LOGIC_VECTOR (31 downto 0);
            data_out     : out    STD_LOGIC_VECTOR (31 downto 0);
            addr         : out    STD_LOGIC_VECTOR (31 downto 0);
-           wr           : out    STD_LOGIC_VECTOR ( 2 downto 0));
+           wr           : out    STD_LOGIC_VECTOR ( 3 downto 0));
            
 end risc32vi;
 
@@ -60,6 +60,9 @@ architecture Behavioral of risc32vi is
    
    -- Generador de escrituras.
    signal wr_pulse   :  std_logic;
+   signal byte_wr    :  std_logic_vector(3 downto 0);
+   signal half_wr    :  std_logic_vector(3 downto 0);
+   signal word_wr    :  std_logic_vector(3 downto 0);
  
 begin
    -- Señales de control
@@ -72,21 +75,32 @@ begin
    opcode   <= ir(6 downto 0); 
    
    -- Genero las señales de escritura.
-   -- para memorias de 32 bits usar LSB.
    with ir(14 downto 12) select
-      wr <= "00"&wr_pulse              when "000",
-            "0"&wr_pulse&wr_pulse      when "001",
-            wr_pulse&wr_pulse&wr_pulse when "010",
-            (others => '0')            when others;
+      wr <= byte_wr              when "000", --SB
+            half_wr              when "001", --SH
+            word_wr              when "010", --SW
+            (others => '0')      when others;
 
+   with alu_out(1 downto 0) select
+      byte_wr  <= "000"&wr_pulse       when "00",
+                  "00"&wr_pulse&"0"    when "01",
+                  "0"&wr_pulse&"00"    when "10",
+                  wr_pulse&"000"       when "11",
+                  (others => '0')      when others;
+ 
+   half_wr(3)  <= wr_pulse and (    alu_out(1)); 
+   half_wr(2)  <= wr_pulse and (    alu_out(1));
+   half_wr(1)  <= wr_pulse and (not alu_out(1)); 
+   half_wr(0)  <= wr_pulse and (not alu_out(1));
+   
+   word_wr     <= wr_pulse&wr_pulse&wr_pulse&wr_pulse;
+   
       
-   --Las fases son 5 y se ejecutan en el siguiente orden.
+   --Las fases son 4 y se ejecutan en el siguiente orden.
    --    * 0. Busqueda      
    --    * 1. Registro IR   
-   --    * 2. Decodificación
-   --    * 3. Espera.   
+   --    * 2. Decodificación      
    --    * 4. Actualización de registros.
-   
    
    cmp_pha: entity work.ring_counter(Behavioral)
             generic map(N        => 5)
