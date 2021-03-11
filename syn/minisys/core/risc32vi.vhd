@@ -219,7 +219,7 @@ begin
  
    -- Genero el address.
    sel_addr <= '1'  when ir(6)&ir(4 downto 2) = "0000" else '0';
-   addr <= alu_out  when sel_addr = '1' and phases(0) = '0' else pcout;
+   addr <= alu_out  when sel_addr = '1' and phases(0) = '0' and phases(1) = '0' else pcout;
    
    -- Datos que guardo en memoria
    data_out <= rs2_dout;
