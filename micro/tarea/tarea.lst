@@ -1,0 +1,71 @@
+
+tarea.out:     formato del fichero elf32-littleriscv
+
+
+Desensamblado de la sección .text:
+
+00030000 <_start>:
+   30000:	00000137          	lui	sp,0x0
+   30004:	40010113          	addi	sp,sp,1024 # 400 <_start-0x2fc00>
+   30008:	0640006f          	j	3006c <main>
+
+0003000c <xor32>:
+   3000c:	fe010113          	addi	sp,sp,-32
+   30010:	00812e23          	sw	s0,28(sp)
+   30014:	02010413          	addi	s0,sp,32
+   30018:	fea42623          	sw	a0,-20(s0)
+   3001c:	fec42783          	lw	a5,-20(s0)
+   30020:	00d79793          	slli	a5,a5,0xd
+   30024:	fec42703          	lw	a4,-20(s0)
+   30028:	00f747b3          	xor	a5,a4,a5
+   3002c:	fef42623          	sw	a5,-20(s0)
+   30030:	fec42783          	lw	a5,-20(s0)
+   30034:	0117d793          	srli	a5,a5,0x11
+   30038:	fec42703          	lw	a4,-20(s0)
+   3003c:	00f747b3          	xor	a5,a4,a5
+   30040:	fef42623          	sw	a5,-20(s0)
+   30044:	fec42783          	lw	a5,-20(s0)
+   30048:	00579793          	slli	a5,a5,0x5
+   3004c:	fec42703          	lw	a4,-20(s0)
+   30050:	00f747b3          	xor	a5,a4,a5
+   30054:	fef42623          	sw	a5,-20(s0)
+   30058:	fec42783          	lw	a5,-20(s0)
+   3005c:	00078513          	mv	a0,a5
+   30060:	01c12403          	lw	s0,28(sp)
+   30064:	02010113          	addi	sp,sp,32
+   30068:	00008067          	ret
+
+0003006c <main>:
+   3006c:	fe010113          	addi	sp,sp,-32
+   30070:	00112e23          	sw	ra,28(sp)
+   30074:	00812c23          	sw	s0,24(sp)
+   30078:	02010413          	addi	s0,sp,32
+   3007c:	fe042623          	sw	zero,-20(s0)
+   30080:	92d697b7          	lui	a5,0x92d69
+   30084:	ca278793          	addi	a5,a5,-862 # 92d68ca2 <main+0x92d38c36>
+   30088:	fef42423          	sw	a5,-24(s0)
+   3008c:	000207b7          	lui	a5,0x20
+   30090:	fef42223          	sw	a5,-28(s0)
+   30094:	000107b7          	lui	a5,0x10
+   30098:	fef42023          	sw	a5,-32(s0)
+   3009c:	fe442783          	lw	a5,-28(s0)
+   300a0:	0007a783          	lw	a5,0(a5) # 10000 <_start-0x20000>
+   300a4:	00f7f713          	andi	a4,a5,15
+   300a8:	00f00793          	li	a5,15
+   300ac:	fef718e3          	bne	a4,a5,3009c <main+0x30>
+   300b0:	fe842503          	lw	a0,-24(s0)
+   300b4:	f59ff0ef          	jal	ra,3000c <xor32>
+   300b8:	fea42423          	sw	a0,-24(s0)
+   300bc:	fe842703          	lw	a4,-24(s0)
+   300c0:	fe042783          	lw	a5,-32(s0)
+   300c4:	00e7a023          	sw	a4,0(a5)
+   300c8:	fe042623          	sw	zero,-20(s0)
+   300cc:	0100006f          	j	300dc <main+0x70>
+   300d0:	fec42783          	lw	a5,-20(s0)
+   300d4:	00178793          	addi	a5,a5,1
+   300d8:	fef42623          	sw	a5,-20(s0)
+   300dc:	fec42703          	lw	a4,-20(s0)
+   300e0:	000497b7          	lui	a5,0x49
+   300e4:	3df78793          	addi	a5,a5,991 # 493df <main+0x19373>
+   300e8:	fee7d4e3          	bge	a5,a4,300d0 <main+0x64>
+   300ec:	fb1ff06f          	j	3009c <main+0x30>
