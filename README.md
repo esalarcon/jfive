@@ -20,12 +20,13 @@ generó:
 |Xilinx Spartan 3 - XC3S200-5 | 585 (28%)           | 3 (25%)            | 63                   | 12.6 |
 |Lattice - iCE40HX4K          | 1018 (LUTS) - (28%) | 4 (20%)            | 32                   | 6.4  |
 
+En la carpeta https://github.com/esalarcon/jfive/tree/main/micro genero un pequeño microcontrolador con este procesador (también con fines pedagógicos) con 1Kbyte de RAM, 1Kbyte de memoria de programa, 4 pines de entrada y 4 pines de salida para poder programarlo en C usando el toolchain para riscv32i como se describe en https://github.com/cliffordwolf/picorv32#building-a-pure-rv32i-toolchain 
+
 Queda mucho por hacer a mi criterio. En la medida que pueda, haré:
 1. Diagrama en RTL del procesador
 2. documentar y embellecer el código
-3. buscar un toolchain para programar con el GCC
-4. hacer periféricos (timer, pwm, etc...)
-5. Agregar soporte para instrucciones comprimidas (C)
-6. Agregar soporte para interrupciones
-7. Optimizar los recursos utilizados.
+3. hacer periféricos (timer, pwm, etc...)
+4. Agregar soporte para instrucciones comprimidas (C)
+5. Agregar soporte para interrupciones
+6. Optimizar los recursos utilizados.
 
