@@ -9,7 +9,7 @@ LDFLAGS = -Wl,-T,micro_juan.ld
 LDLIBS = -nostdlib -nodefaultlibs
 
 ejemplo: 
-	$(CC) $(CCFLAGS) $(LDFLAGS) $(LDLIBS) start_juan.s otro.c ejemplo.c -o $@.out
+	$(CC) $(CCFLAGS) $(LDFLAGS) $(LDLIBS) start_juan.s ejemplo.c -o $@.out
 	$(OBJCOPY) -O binary $@.out $@.bin
 	python3 generar_rom.py $@.bin > $@.vhd	
 	$(SIZE) $@.out
