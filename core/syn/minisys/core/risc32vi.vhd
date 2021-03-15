@@ -10,20 +10,19 @@ entity risc32vi is
            data_in      : in     STD_LOGIC_VECTOR (31 downto 0);
            data_out     : out    STD_LOGIC_VECTOR (31 downto 0);
            addr         : out    STD_LOGIC_VECTOR (31 downto 0);
-           wr           : out    STD_LOGIC_VECTOR ( 3 downto 0));
-           
+           wr           : out    STD_LOGIC_VECTOR ( 3 downto 0));   
 end risc32vi;
 
 architecture Behavioral of risc32vi is
    --Fases del procesador.
    signal phases     :  std_logic_vector(4   downto 0);
    
-   --Registro IR señales.
+   --Registro IR seÃ±ales.
    signal ir         :  std_logic_vector(31 downto 0);
    signal opcode     :  std_logic_vector(6 downto 0);
    signal ir_en      :  std_logic;
    
-   --Banco de registros, señales.
+   --Banco de registros, seÃ±ales.
    signal sel_rdin   :  std_logic_vector( 2 downto 0);
    signal rd_din     :  std_logic_vector(31 downto 0);
    signal rs1_dout   :  std_logic_vector(31 downto 0);
@@ -65,7 +64,7 @@ architecture Behavioral of risc32vi is
    signal word_wr    :  std_logic_vector(3 downto 0);
  
 begin
-   -- Señales de control
+   -- SeÃ±ales de control
    ir_en    <=  phases(1);
    pc_en    <=  phases(4) and jump_ok;
    pc_inc   <=  phases(4) and (not jump_ok);
@@ -74,7 +73,7 @@ begin
    jump_ok  <= (branch or ir(2)) when ir(6 downto 4) = "110" else '0';
    opcode   <= ir(6 downto 0); 
    
-   -- Genero las señales de escritura.
+   -- Genero las seÃ±ales de escritura.
    with ir(14 downto 12) select
       wr <= byte_wr              when "000", --SB
             half_wr              when "001", --SH
@@ -99,8 +98,8 @@ begin
    --Las fases son 4 y se ejecutan en el siguiente orden.
    --    * 0. Busqueda      
    --    * 1. Registro IR   
-   --    * 2. Decodificación      
-   --    * 4. Actualización de registros.
+   --    * 2. DecodificaciÃ³n      
+   --    * 4. ActualizaciÃ³n de registros.
    
    cmp_pha: entity work.ring_counter(Behavioral)
             generic map(N        => 5)
@@ -110,7 +109,7 @@ begin
                         q        => phases);
  
    -- Registro IR. 
-   -- Es un registro interno y retiene la instrucción
+   -- Es un registro interno y retiene la instrucciÃ³n
    -- actual
    cmp_ir:  entity work.cnt(Behavioral)
             generic map(N        => 32)
@@ -145,7 +144,7 @@ begin
                         rs1_dout => rs1_dout,
                         rs2_dout => rs2_dout);
                         
-   -- Bloque de extensión de signo. Funciona con LOAD.
+   -- Bloque de extensiÃ³n de signo. Funciona con LOAD.
    cmp_ex:  entity work.extendersigno(Behavioral)
             port map(   ain      => data_in,
                         noext    => ir(13),
@@ -175,7 +174,7 @@ begin
    alu_inm(11 downto 5) <= ir(31 downto 25);
    alu_inm(4 downto 0)  <= ir(11 downto 7) when ir(5) = '1' else ir(24 downto 20);
  
-   --Parámetro de la ALU para saber si suma o resta
+   --ParÃ¡metro de la ALU para saber si suma o resta
    --o si desplaza a derecha con o sin signo.
    alu_param <= ir(30) when opcode(6)&opcode(4 downto 2) = "0100" else '0';
  
