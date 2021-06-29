@@ -26,7 +26,6 @@ Queda mucho por hacer a mi criterio. En la medida que pueda, haré:
 1. Diagrama en RTL del procesador
 2. documentar y embellecer el código
 3. hacer periféricos (timer, pwm, etc...)
-4. Agregar soporte para instrucciones comprimidas (C)
-5. Agregar soporte para interrupciones
-6. Optimizar los recursos utilizados.
+4. Agregar soporte para interrupciones
+5. Optimizar los recursos utilizados.
 
