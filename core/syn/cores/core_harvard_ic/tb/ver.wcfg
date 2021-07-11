@@ -3,7 +3,7 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="/home/juan/Documentos/riscv32i/vhdl/core_risc_v/core_harvard_ic/riscv_harvard_tb_isim_beh.wdb" id="1" type="auto">
+      <db_ref path="C:/Users/esala/Downloads/hobby/cores/riscv/repos/jfive/core/syn/cores/core_harvard_ic/riscv_harvard_tb_isim_beh.wdb" id="1" type="auto">
          <top_modules>
             <top_module name="numeric_std" />
             <top_module name="riscv_harvard_tb" />
@@ -11,10 +11,7 @@
          </top_modules>
       </db_ref>
    </db_ref_list>
-   <WVObjectSize size="7" />
-   <wave_markers>
-      <marker time="210000000" label="" />
-   </wave_markers>
+   <WVObjectSize size="8" />
    <wvobject fp_name="/riscv_harvard_tb/clk" type="logic" db_ref_id="1">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
@@ -43,7 +40,7 @@
       <wvobject fp_name="/riscv_harvard_tb/uut/ir" type="array" db_ref_id="1">
          <obj_property name="ElementShortName">ir[31:0]</obj_property>
          <obj_property name="ObjectShortName">ir[31:0]</obj_property>
-         <obj_property name="Radix">BINARYRADIX</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
       </wvobject>
    </wvobject>
    <wvobject fp_name="group565" type="group">
@@ -139,6 +136,7 @@
          <wvobject fp_name="/riscv_harvard_tb/uut/cmp_rg/ram[8]" type="array" db_ref_id="1">
             <obj_property name="ElementShortName">[8]</obj_property>
             <obj_property name="ObjectShortName">ram[8]</obj_property>
+            <obj_property name="Radix">HEXRADIX</obj_property>
          </wvobject>
          <wvobject fp_name="/riscv_harvard_tb/uut/cmp_rg/ram[9]" type="array" db_ref_id="1">
             <obj_property name="ElementShortName">[9]</obj_property>
@@ -232,6 +230,46 @@
             <obj_property name="ElementShortName">[31]</obj_property>
             <obj_property name="ObjectShortName">ram[31]</obj_property>
          </wvobject>
+      </wvobject>
+   </wvobject>
+   <wvobject fp_name="group52" type="group">
+      <obj_property name="label">ALU</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+      <wvobject fp_name="/riscv_harvard_tb/uut/alu_out" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">alu_out[31:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_out[31:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/riscv_harvard_tb/uut/alu_op1" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">alu_op1[31:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_op1[31:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/riscv_harvard_tb/uut/alu_op2" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">alu_op2[31:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_op2[31:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/riscv_harvard_tb/uut/alu_inm" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">alu_inm[11:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_inm[11:0]</obj_property>
+         <obj_property name="Radix">HEXRADIX</obj_property>
+      </wvobject>
+      <wvobject fp_name="/riscv_harvard_tb/uut/alu_cmd" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">alu_cmd[2:0]</obj_property>
+         <obj_property name="ObjectShortName">alu_cmd[2:0]</obj_property>
+      </wvobject>
+      <wvobject fp_name="/riscv_harvard_tb/uut/alu_sinm" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">alu_sinm</obj_property>
+         <obj_property name="ObjectShortName">alu_sinm</obj_property>
+      </wvobject>
+      <wvobject fp_name="/riscv_harvard_tb/uut/alu_param" type="logic" db_ref_id="1">
+         <obj_property name="ElementShortName">alu_param</obj_property>
+         <obj_property name="ObjectShortName">alu_param</obj_property>
+      </wvobject>
+      <wvobject fp_name="/riscv_harvard_tb/uut/sel_op2" type="array" db_ref_id="1">
+         <obj_property name="ElementShortName">sel_op2[1:0]</obj_property>
+         <obj_property name="ObjectShortName">sel_op2[1:0]</obj_property>
       </wvobject>
    </wvobject>
 </wave_config>

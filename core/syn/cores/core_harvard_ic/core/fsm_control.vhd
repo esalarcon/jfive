@@ -8,7 +8,8 @@ entity fsm_control is
            p_in         : in  STD_LOGIC_VECTOR (15 downto 0);
            ir           : out STD_LOGIC_VECTOR (31 downto 0);
            phases       : out STD_LOGIC_VECTOR (2 downto 0);
-           pc_inc       : out STD_LOGIC);
+           pc_inc       : out STD_LOGIC;
+           is_c_jalr    : out STD_LOGIC);
 end fsm_control;
 
 architecture Behavioral of fsm_control is
@@ -28,7 +29,8 @@ begin
     --Decompresor instrucciones tipo C
    cmp_dec: entity work.decompresor(Behavioral)
             port map(   c        => p_in,
-                        i        => in32);
+                        i        => in32,
+                        c_jalr   => is_c_jalr);
    --registro.
    process(clk)
    begin 

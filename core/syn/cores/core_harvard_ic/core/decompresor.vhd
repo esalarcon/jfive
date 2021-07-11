@@ -4,11 +4,14 @@ use IEEE.NUMERIC_STD.ALL;
 
 
 entity decompresor is
-    Port (  c  : in  STD_LOGIC_VECTOR (15 downto 0);
-            i  : out STD_LOGIC_VECTOR (31 downto 0));
+    Port (  c        : in  STD_LOGIC_VECTOR (15 downto 0);
+            i        : out STD_LOGIC_VECTOR (31 downto 0);
+            c_jalr   : out STD_LOGIC);
 end decompresor;
 --Me copio lo que hizo:
 --https://github.com/djzenma/RV32IC-CPU/blob/master/RTL/decompression.v
+--Le agrego la salida c_jalr ya que tengo que hacer PC+2 en vez de PC+4 
+--cuando es jalr comprimida.
 
 -- Instrucciones soportadas (26):
 -- -------------------------
@@ -42,9 +45,13 @@ end decompresor;
 architecture Behavioral of decompresor is
 begin
    process(c)
-      variable tmp : std_logic_vector(4 downto 0);
+      variable tmp      : std_logic_vector(4 downto 0);
+      variable chk_jalr : std_logic;
+      
    begin
       tmp := c(15 downto 13)&c(1 downto 0) ;
+      chk_jalr := '0';
+      
       case tmp is
          when "00000"=> 
                         --c.addi4spn
@@ -151,6 +158,7 @@ begin
                         if c(12)='1' and c(11 downto 7)/="00000" then
                            --c.jalr
                            i <= x"000"&c(11 downto 7)&"000"&"00001"&"1100111";
+                           chk_jalr := '1';
                         else
                            --c.jr
                            i <= x"000"&c(11 downto 7)&"000"&"00000"&"1100111";
@@ -201,6 +209,7 @@ begin
          --when "11111"=>
          when others => i <= (others => '0');   -- Falla;
       end case;
+      c_jalr <= chk_jalr;
    end process;
 end Behavioral;
 

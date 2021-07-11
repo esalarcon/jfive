@@ -37,6 +37,7 @@ architecture Behavioral of rv32ic is
    
    --Contador de programa (IP)
    signal pcout      :  std_logic_vector(31 downto 0);
+   signal pcin       :  std_logic_vector(31 downto 0);
    signal pc_inc     :  std_logic;
    signal pc_en      :  std_logic;
    signal pc_inc_2   :  std_logic;
@@ -65,6 +66,10 @@ architecture Behavioral of rv32ic is
    signal half_wr    :  std_logic_vector(3 downto 0);
    signal word_wr    :  std_logic_vector(3 downto 0);
  
+   --Instrucciones comprimidas.
+   signal is_c_jalr  :  std_logic;
+   signal adds_jalr  :  std_logic_vector(31 downto 0);
+   
 begin
    -- Seniales de control
    pc_en       <=  phases(EXECUTE) and jump_ok;
@@ -100,7 +105,7 @@ begin
    
    --Discrimino si es un inmediato o Sx
    alu_inm(11 downto 5) <= ir(31 downto 25);
-   alu_inm(4 downto 0)  <= ir(11 downto 7) when ir(5) = '1' else ir(24 downto 20);
+   alu_inm(4 downto 0)  <= ir(11 downto 7) when ir(5) = '1' and ir(2) = '0' else ir(24 downto 20);
  
    --Parmetro de la ALU para saber si suma o resta
    --o si desplaza a derecha con o sin signo.
@@ -115,10 +120,10 @@ begin
    
    --Elijo el op_1 de la ALU (AUIPC)
    with opcode(6 downto 2) select
-   alu_op1 <=  pcout       when  "00101",  
-               pcout       when  "11011",
-               pcout       when  "11000",
-               rs1_dout    when others;
+   alu_op1 <=  pcout                   when  "00101", --AUIPC 
+               pcout                   when  "11011", --JAL
+               pcout                   when  "11000", --Bxx
+               rs1_dout                when others;
  
    --Elijo el op_2 de la ALU.
    sel_op2 <= ir(4)&ir(2);
@@ -134,25 +139,37 @@ begin
                      rs2_dout                            when "10",     --RS2
                      ir(31 downto 12)&x"000"             when others;   --AUIPC
                      
-   -- Elijo que guardo en RD 
-   sel_rdin <= ir(5)&ir(4)&ir(2);
+   -- Elijo que guardo en RD                 
+   sel_rdin  <= ir(5)&ir(4)&ir(2);
    with sel_rdin select
       rd_din     <=  din_sext                            when "000",    --LD
-                     std_logic_vector(unsigned(pcout)+4) when "101",    --JALR
+                     adds_jalr                           when "101",    --JALR
                      ir(31 downto 12) & x"000"           when "111",    --LUI
                      alu_out                             when others;   --OPs. 
-      
+   
+   
+   -- C.JALR no se puede mapear directamente ya que hay que hacer PC+2
+   -- en vez de PC+4.
+   adds_jalr <=      std_logic_vector(unsigned(pcout)+2) when is_c_jalr = '1' 
+                else std_logic_vector(unsigned(pcout)+4);
+                
+   
+   --JALR tambi閚 pone a cero el bit 0 de PC
+   pcin(31 downto 1) <= alu_out(31 downto 1);
+   pcin(0)  <= '0' when opcode(6 downto 2) = "11001" else alu_out(0);
+   
+   
    --Las fases dependen de las instrucciones.
       -- Las instrucciones de 32 bits tardan 5 ciclos de reloj.
          --    * 0. Busqueda parte baja  
-         --    * 1. Decodificaci贸n parte baja      
+         --    * 1. Decodificacion parte baja      
          --    * 2. Busqueda parte alta 
-         --    * 3. Decodificaci贸n parte alta / ejecucion.
-         --    * 4. Actualizaci贸n registros / memoria.
+         --    * 3. Decodificacion parte alta / ejecucion.
+         --    * 4. Actualizacion registros / memoria.
       -- Las instrucciones de 16 bits tardan 3 ciclos de reloj.
          --    * 0. Busqueda   
-         --    * 1. Decompresion / Decodificaci贸n / ejecuci贸n      
-         --    * 2. Actualizaci贸n registros / memoria.
+         --    * 1. Decompresion / Decodificacion / ejecucion      
+         --    * 2. Actualizacion registros / memoria.
    
    --FSM control
    cmp_fsm: entity work.fsm_control(Behavioral)
@@ -161,7 +178,8 @@ begin
                         p_in        => program_in, 
                         ir          => ir,
                         phases      => phases,
-                        pc_inc      => pc_inc_2);
+                        pc_inc      => pc_inc_2,
+                        is_c_jalr   => is_c_jalr);
 
    --Contador de programa PC.
    cmp_pc:  entity work.cnt(Behavioral)
@@ -169,7 +187,7 @@ begin
                         VDEF     => to_integer(unsigned(ENTRY_POINT)))
             port map(   clk      => clk,
                         rst      => rst,
-                        din      => alu_out,
+                        din      => pcin,
                         load     => pc_en,
                         plus_2   => pc_inc,
                         dout     => pcout);

@@ -95,6 +95,13 @@ BEGIN
          --c.li r9, "111111"
          when x"00001014" => program_in <= x"5"&"01001"&"11111"&"01";
          
+         --c.jalr R2
+         when x"00001016" => program_in <= x"9"&"00010"&"00000"&"10";
+         
+         --JALR R8, R2, 0
+         when x"00002006" => program_in <= "0"&"000"&"01000"&"1100111"; 
+         when x"00002008" => program_in <= x"000"&"0001";
+         
          --c.nop         
          when others => program_in <= x"0001";                       
       end case;
